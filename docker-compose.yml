@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./logs/postgres:/app/logs/postgresql
+    env_file:
+      - .env
+
+  web:
+    image: USERNAME_FROM_SECRETS/diplomabackend:latest
+    command: > 
+      bash -c "python manage.py makemigrations &&
+               python manage.py migrate && 
+               gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - myblog.wsgi:application"
+    volumes:
+      - ./app:/app
+      - ./logs/django:/app/logs/django
+    ports:
+      - "8080:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
