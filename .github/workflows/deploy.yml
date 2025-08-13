@@ -23,7 +23,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/blog-server:latest
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/blogapp:latest
 
     - name: Replace Docker username in docker-compose.yml
       run: |

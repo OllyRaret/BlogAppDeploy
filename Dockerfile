@@ -11,6 +11,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 RUN mkdir -p /app/logs/django
-RUN mkdir -p /app/logs/postgresql
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--error-logfile", "-", "myblog.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myblog.wsgi:application"]

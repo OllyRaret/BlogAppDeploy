@@ -6,19 +6,18 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-      - ./logs/postgres:/app/logs/postgresql
+      - ./logs/postgres:/var/log/postgresql
     env_file:
       - .env
 
   web:
-    image: USERNAME_FROM_SECRETS/diplomabackend:latest
+    image: USERNAME_FROM_SECRETS/blogapp:latest
     command: > 
       bash -c "python manage.py makemigrations &&
                python manage.py migrate && 
-               gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - myblog.wsgi:application"
+               gunicorn --bind 0.0.0.0:8000 myblog.wsgi:application"
     volumes:
-      - ./app:/app
-      - ./logs/django:/app/logs/django
+      - ./logs:/logs
     ports:
       - "8080:8000"
     depends_on:
